@@ -1,5 +1,6 @@
 package model.dao;
 
+import db.DB;
 import model.dao.impl.SellerDaoJDBC;
 
 /*A classe vai expor um método que retorna um tipo da interface, mais internamente ela instancia
@@ -8,6 +9,6 @@ import model.dao.impl.SellerDaoJDBC;
 
 public class DaoFactory {
 	public static SellerDao createSellerDao() {
-		return new SellerDaoJDBC();
+		return new SellerDaoJDBC(DB.getConnection());
 	}
 }
