@@ -24,7 +24,31 @@ public class SellerDaoJDBC implements SellerDao {
 	}
 
 	@Override
-	public void insert(Seller obj) {		
+	public void update(Seller obj) {		
+		String sql = "UPDATE seller\r\n" + 
+				"SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?\r\n" + 
+				"WHERE Id = ?";
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			
+			
+			st.setString(1, obj.getName());
+			st.setString(2, obj.getEmail());
+			st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+			st.setDouble(4, obj.getBaseSalary());
+			st.setInt(5, obj.getDepartment().getId());
+			st.setInt(6, obj.getId());
+			
+			st.executeUpdate();
+			
+		} catch (Exception e) {
+			throw new DbException(e.getMessage());
+		}
+
+	}
+
+	@Override
+	public void insert(Seller obj) {
 		try {
 			PreparedStatement st = conn.prepareStatement("INSERT INTO seller"+
 					"(Name, Email, BirthDate, BaseSalary, DepartmentId)"
@@ -54,14 +78,14 @@ public class SellerDaoJDBC implements SellerDao {
 	}
 
 	@Override
-	public void update(Seller obj) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void deleteById(Seller obj) {
-		// TODO Auto-generated method stub
+		String sql = "DELETE FROM seller WHERE Id = "+obj.getId();
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 
 	}
 
